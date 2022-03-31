@@ -2,7 +2,7 @@ import type { GetStaticPropsContext, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { buildPokemonImageUrl } from "../utils/buildPokemonImageUrl";
-import { PokemonBaseData, PokemonData } from "../utils/types";
+import { NameAndUrl, PokemonData } from "../utils/types";
 
 interface HomeProps {
     pokemons: PokemonData[];
@@ -45,7 +45,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
         );
         const { results } = await response.json();
         const pokemons: PokemonData[] = results.map(
-            (result: PokemonBaseData, index: number) => {
+            (result: NameAndUrl, index: number) => {
                 return {
                     ...result,
                     image: buildPokemonImageUrl(index + 1),
@@ -57,8 +57,9 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
                 pokemons,
             },
         };
-    } catch (err) {
-        console.log(err);
+    } catch (error) {
+        console.log(error);
+        throw error;
     }
 };
 
